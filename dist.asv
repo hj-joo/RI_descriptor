@@ -1,6 +1,6 @@
 
-data_path = '/Users/juhyeongjun/Downloads/';
-filename = 'groundtruth_2012-09-28.csv';
+data_path = '/Users/juhyeongjun/Downloads/2013-04-05/';
+filename = 'groundtruth_2013-04-05.csv';
 data = csvread(strcat(data_path, filename));
 % gtpose_1 = gtpose(1, 2:3);
 % gtpose_2 = gtpose(15000,2:3);
@@ -21,8 +21,8 @@ data = csvread(strcat(data_path, filename));
 
 
 % 첫 번째 좌표값을 시작점으로 설정
-start_x = data(1, 2);
-start_y = data(1, 3);
+start_x = data(3, 2);
+start_y = data(3, 3);
 start_index = 1;
 
 
@@ -49,7 +49,7 @@ end
 % 마지막 데이터도 추가
 new_data = [new_data; data(start_index:end, 1:3)];
 zdzsd = [zdzsd; data(end, 1:4)];
-filename = 'groundtruth_revise_2012-09-28.csv';
+filename = 'groundtruth_revise_2012-05-26.csv';
 
 dlmwrite(filename, zdzsd, 'delimiter',',','precision',20,'newline','pc');
 
