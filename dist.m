@@ -1,0 +1,61 @@
+
+data_path = '/Users/juhyeongjun/Downloads/2012-05-26/lb3/';
+filename = 'groundtruth_2012-05-26.csv';
+data = csvread(strcat(data_path, filename));
+% gtpose_1 = gtpose(1, 2:3);
+% gtpose_2 = gtpose(15000,2:3);
+% disp([gtpose_1 gtpose_2])
+% distance = dist_btn_pose(gtpose_1, gtpose_2);
+% disp(distance)
+% 
+% for i=length(gtpose)
+%     gtpose_1 = gtpose(i, 2:3);
+%     for j=length(gtpose)
+%         gtpose_2 = gtpose(j, 2:3);
+%         distance = dist_btn_pose(gtpose_1, gtpose_2);
+%         if distance > 2 && distance < 2.5
+% 
+% end
+
+
+
+
+% 첫 번째 좌표값을 시작점으로 설정
+start_x = data(3, 2);
+start_y = data(3, 3);
+start_index = 1;
+
+
+% 2m 간격으로 데이터 수집하기
+step_size = 1.999;
+new_data = [];
+zdzsd = [];
+disp(size(data, 1))
+for i = 4:size(data, 1)
+    % 현재 좌표와 시작점 사이의 거리 계산
+    distance = sqrt((data(i, 2) - start_x)^2 + (data(i, 3) - start_y)^2);
+    % 2m 이상이면 현재 인덱스 저장 후 다음 시작점 설정
+    if distance >= step_size
+        %disp(distance)
+        new_data = [new_data; data(start_index:i-1, 1:3)];
+        zdzsd = [zdzsd; data(i, 1:4)];
+        start_x = data(i, 2);
+        start_y = data(i, 3);
+        start_index = i;
+        %disp(i)
+    end
+end
+
+% 마지막 데이터도 추가
+new_data = [new_data; data(start_index:end, 1:3)];
+zdzsd = [zdzsd; data(end, 1:4)];
+filename = 'groundtruth_revise_2012-05-26.csv';
+
+dlmwrite(filename, zdzsd, 'delimiter',',','precision',20,'newline','pc');
+
+% 결과 확인
+disp(zdzsd);
+figure(101); clf;
+plot(zdzsd(:,2), zdzsd(:,3));
+axis equal;
+
